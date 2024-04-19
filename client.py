@@ -2,13 +2,13 @@ import socket
 import struct
 import time
 import json
-
+import sys
 import hashlib
 
 HOST = '127.0.0.1'
 PORT = 12345
 
-OUTPUT_PDF = 'received/pdf.pdf'
+OUTPUT_PDF = sys.argv[1] if len(sys.argv) > 1 else "received/output.pdf"
 
 BUFFER_SIZE = 2060
 
@@ -19,7 +19,7 @@ def validate_checksum(received_checksum, filename):
         calculated_checksum = hashlib.md5(f.read()).digest()
     return received_checksum == calculated_checksum
 
-def send_request():
+def send_request(filename=OUTPUT_PDF):
     client_socket.sendto("GET".encode('utf-8'), (HOST, PORT))
     checksum_data, _ = client_socket.recvfrom(16)  # MD5 checksums are 16 bytes
     received_checksum = checksum_data

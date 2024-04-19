@@ -9,14 +9,12 @@ import sys
 
 # import dataclass
 
-# Definir o endereço IP e a porta do servidor
 
 HOST = '127.0.0.1'
 PORT = 12345
 
-# Tamanho do buffer em bytes
 BUFFER_SIZE = 2048
-FILE_PATH = "pdf.pdf"
+FILE_PATH = sys.argv[1] if len(sys.argv) > 1 else "file.pdf"
 TIMEOUT = 5
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -80,8 +78,8 @@ def run_server():
         data, addr = server_socket.recvfrom(BUFFER_SIZE)
         if data:
             # time.sleep(0.02)
-            threading.Thread(target=handle_connection, args=(data, addr)).start()
-            # handle_connection(data, addr)
+            # threading.Thread(target=handle_connection, args=(data, addr)).start()
+            handle_connection(data, addr)
 
 
 
